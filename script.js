@@ -1,85 +1,75 @@
-*{
-    box-sizing: border-box;
+const resultEl = document.getElementById('result');
+const lengthEl = document.getElementById('length');
+const uppercaseEl = document.getElementById('uppercase');
+const lowercaseEl = document.getElementById('lowercase');
+const numbersEl = document.getElementById('numbers');
+const symbolsEl = document.getElementById('symbols');
+const generateEl = document.getElementById('generate');
+const clipboardEl = document.getElementById('clipboard');
+
+
+const randomFunc = {
+    lower: getRandomLower,
+    upper: getRandomUpper,
+    number: getRandomNumber,
+    Symbol: getRandomSymbol
+};
+// Generate event listen
+generateEl.addEventListener('click', () => {
+    const length = +lengthEl.value
+    const hasLower = lowercaseEl.checked;
+    const hasUpper = uppercaseEl.checked;
+    const hasNumber = numbersEl.checked;
+    const hasSymbol = symbolsEl.checked;
+
+    resultEl.innerText = generatePassword(hasLower, hasNumber, hasUpper, hasSymbol, length);
+});
+   
+
+// Generate password function
+function generatePassword(lower, upper, number, symbol, length) {
+
+
+    let generatedPassword = '';
+
+    const typesCount = lower + upper + number + Symbol;
+
+    //console.log('typesCount: '), typesCount;
+
+    const typesArr = [{ lower }, { upper }, { number }, { Symbol }].filter(item => Object.values(item) [0]);
+
+    //console.log('typesArr: ', typesArr);
+
+    if(typesCount === 0) {
+        return '';
+
+        for(let i = 0; i < length; i += typesCount) {
+            typesArr.forEach(type => {
+                const funcName = Object.keys(type)[0];
+                //console.log('funcName: ', funcName);
+
+                generatedPassword += randomFunc[funcName]();            
+            });
+        }
+
+        const finalPassword = generatedPassword.slice(0, length));
+        return finalPassword;
+
+    }
+// Generator functions
+function getRandomLower() {
+    return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
 }
 
-body{
-    background-color: #3b3b98;
-    color: #fff;
-    display: flex;
-    font-family: 'Muli', sans-serif;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    min-height: 100vh;
+function getRandomLower() {
+    return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
 }
 
-p{
-    margin: 5px 0;
-
+function getRandomNumber() {
+    return String.fromCharCode(Math.floor(Math.random() * 10) +48);
 }
 
-h2{
-    margin: 10px 0 20px;
-    text-align: center;
-}
-
-input[type=checkbox] {
-    margin-right: 0;
-}
-
-.container {
-    background-color: #23235b;
-    box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.2);
-    padding:  20px;
-    width:  350px;
-    max-width: 100%;
-}
-
-.result-container {
-    background-color: rgba(0,0,0,0.4);
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-    font-size: 18px;
-    letter-spacing: 1px;
-    padding: 12px 10px;
-    height: 50px;
-    width: 100%;
-}
-
-.result-container #result {
-    word-wrap: break-word;
-    max-width: calc(100% - 40px);
-}
-
-.result-container .btn {
-    font-size: 20px;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    height: 40px;
-    width: 40px;
-}
-
-.btn {
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 8px 12px;
-    background-color: #3b3b98;
-}
-
-.btn-large {
-    display: block;
-    width: 100%;
-}
-
-.setting {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 15px 0;
+function getRandomSymbol() {
+    const symbols = '!@#$%^&*(){}[]=<>,.'
+    return symbols[Math.floor(Math.random() * symbols.length)];
 }
